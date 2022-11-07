@@ -59,7 +59,7 @@ export class AuthService {
   // jwt tokenの作成
   async generateJwt(userId: number, email: string): Promise<Jwt> {
     const payload = {
-      sud: userId,
+      sub: userId,
       email,
     };
     const secret = this.config.get('JWT_SECRET');
