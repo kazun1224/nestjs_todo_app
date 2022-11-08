@@ -18,6 +18,20 @@ async function bootstrap() {
   });
   // cookieを解析するための処理
   app.use(cookieParser());
-  await app.listen(3005);
+  // csrfを読み込む処理
+  app.use(
+    csurf({
+      cookie: {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: false,
+      },
+      value: (req: Request) => {
+        return req.header('csrf-token');
+      },
+    }),
+  );
+  // 本番環境は環境変数を使用する(process.env.PORT)
+  await app.listen(process.env.PORT || 3005);
 }
 bootstrap();
