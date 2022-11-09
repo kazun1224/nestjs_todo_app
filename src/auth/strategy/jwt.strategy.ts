@@ -20,6 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
           return jwt;
         },
       ]),
+      // 有効期限が過ぎた値は有効にすることをfalseでなしに
       ignoreExpiration: false,
       secretOrKey: config.get('JWT_SECRET'),
     });
