@@ -62,6 +62,11 @@
     "@types/express-session" "^1.17.0"
     reflect-metadata "^0.1.13"
 
+"@adminjs/prisma@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@adminjs/prisma/-/prisma-3.0.1.tgz#7974691bcdddadde3ebd2c77af61d0fd954a6de5"
+  integrity sha512-rUznVjLwqtAvgSp4EjmLnWgRvAyIDJYVsrDFuiWWafzTbnvpcX+hpx0xpOS7IXMmS8clCw0/dMzOPeTZElDv3Q==
+
 "@ampproject/remapping@^2.1.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.2.0.tgz#56c133824780de3174aed5ab6834f3026790154d"
