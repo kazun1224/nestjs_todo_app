@@ -1,0 +1,284 @@
+openapi: "3.0.3"
+
+info:
+  title: todo-app
+  version: 1.0.0
+
+paths:
+  /auth/csrf:
+    get:
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  csrf_token:
+                    type: string
+                    example: kfdajfka
+  /auth/signup:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: example@example.com
+                password:
+                  type: string
+                  example: password
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: ok
+  /auth/login:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: example@example.com
+                password:
+                  type: string
+                  example: password
+      responses:
+        "201":
+          description: Created
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: access_token=abcde12345; Path=/; HttpOnly secure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: ok
+  /auth/logout:
+    post:
+      responses:
+        "201":
+          description: Created
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: access_token=; Path=/; HttpOnly secure
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: ok
+  /user:
+    get:
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+    put:
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nickname:
+                  type: string
+                  example: nickname
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+  /todo:
+    get:
+      security:
+      - cookieAuth: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/todos'
+    post:
+      security:
+      - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/postAndPutTodo'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/todo'
+
+  /todo/{id}:
+    parameters:
+      - $ref: '#/components/parameters/todoIdParameter'
+    get:
+      security:
+      - cookieAuth: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/todo'
+
+    put:
+      security:
+      - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/postAndPutTodo'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/todo'
+
+    delete:
+      security:
+      - cookieAuth: []
+      responses:
+        200:
+          description: OK
+
+
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: http
+      scheme: bearer
+      description: Credentials or access token for API
+      bearerFormat: JWT
+
+  parameters:
+    todoIdParameter:
+      name: id
+      in: path
+      description: todo id.
+      required: true
+      schema:
+        type: string
+      example: 1
+
+  schemas:
+  
+    todos:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          createAd:
+            type: integer
+            example: date
+          updateAt:
+            type: integer
+            example: date
+          title:
+            type: string
+            example: todo
+          description:
+            type: string
+            example: description
+          userId:
+            type: integer
+            example: 1
+
+    todo:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        createAd:
+          type: integer
+          example: date
+        updateAt:
+          type: integer
+          example: date
+        title:
+          type: string
+          example: todo
+        description:
+          type: string
+          example: description
+        userId:
+          type: integer
+          example: 1
+
+    postAndPutTodo:
+      type: object
+      properties:
+        title:
+          type: string
+          example: todo
+        description:
+          type: string
+          example: description
+
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        createAd:
+          type: string
+          example: date
+        updated:
+          type: string
+          example: date
+        email:
+          type: string
+          example: example@example.com
+        nickname:
+          type: string
+          example: nickname

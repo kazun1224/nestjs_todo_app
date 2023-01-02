@@ -47,7 +47,7 @@ export class TodoController {
     @Req() req: Request,
     @Param('id', ParseIntPipe) taslId: number,
     @Body() dto: UpdateTaskDto,
-  ) {
+  ): Promise<Task> {
     return this.todoService.updateTaskById(req.user.id, taslId, dto);
   }
 
